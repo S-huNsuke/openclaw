@@ -303,7 +303,7 @@ describe("runtime config snapshot writes", () => {
             minimax: {
               baseUrl: "https://api.minimax.io/v1",
               apiKey: "sk-actual-secret-value", // pragma: allowlist secret
-              models: [{ name: "MiniMax-Text-01" }],
+              models: [{ id: "minimax", name: "MiniMax-Text-01", reasoning: false, input: ["text"], cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 1000, maxTokens: 1000 }],
             },
           },
         },
@@ -316,8 +316,8 @@ describe("runtime config snapshot writes", () => {
             minimax: {
               baseUrl: "https://api.minimax.io/v1",
               // Simulate what the UI sends back after displaying a redacted form field
-              apiKey: "__OPENCLAW_REDACTED__" as unknown as string,
-              models: [{ name: "MiniMax-Text-01" }],
+              apiKey: "__OPENCLAW_REDACTED__" as unknown as string,  // eslint-disable-line @typescript-eslint/no-explicit-any
+              models: [{ id: "minimax", name: "MiniMax-Text-01", reasoning: false, input: ["text"], cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 1000, maxTokens: 1000 }],
             },
           },
         },
