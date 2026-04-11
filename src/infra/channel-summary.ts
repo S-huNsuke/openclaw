@@ -187,15 +187,19 @@ export async function buildChannelSummary(
     const anyEnabled = entries.some((entry) => entry.enabled);
     const fallbackEntry =
       entries.find((entry) => entry.accountId === defaultAccountId) ?? entries[0];
-    const summary = plugin.status?.buildChannelSummary
-      ? await plugin.status.buildChannelSummary({
-          account: fallbackEntry?.account ?? {},
-          cfg: effective,
-          defaultAccountId,
-          snapshot:
-            fallbackEntry?.snapshot ?? ({ accountId: defaultAccountId } as ChannelAccountSnapshot),
-        })
-      : undefined;
+    // Only build channel summary when there are actually configured accounts.
+    // Passing a default/fallback accountId with no real config produces phantom
+    // "not configured" entries that confuse the status display.
+    const summary =
+      configuredEntries.length > 0 && plugin.status?.buildChannelSummary
+        ? await plugin.status.buildChannelSummary({
+            account: fallbackEntry?.account ?? {},
+            cfg: effective,
+            defaultAccountId,
+            snapshot:
+              fallbackEntry?.snapshot ?? ({ accountId: defaultAccountId } as ChannelAccountSnapshot),
+          })
+        : undefined;
 
     const summaryRecord = summary;
     const linked =
